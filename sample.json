@@ -1,0 +1,16 @@
+{
+  "name" : "kyj",
+  "age" : 34,
+  "cars" : [
+    {
+      "name" : "K5",
+      "car_number" : "0141",
+      "TYPE" : "SUV"
+    },
+    {
+      "name" : "K7",
+      "car_number" : "1141",
+      "TYPE" : "JEEP"
+    }
+  ]
+}
