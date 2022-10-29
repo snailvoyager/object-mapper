@@ -1,4 +1,4 @@
-package dto;
+package jackson.dto;
 
 import java.util.List;
 
@@ -6,6 +6,16 @@ public class User {
     private String name;
     private int age;
     private List<Car> cars;
+
+    public User() {
+        this.name = null;
+        this.age = 0;
+    }
+
+    public User(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
 
     public String getName() {
         return name;
