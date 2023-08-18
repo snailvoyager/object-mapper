@@ -48,6 +48,9 @@ public class NetSfJson {
         carClass.setType(carObject.getString("type"));
         System.out.println("## JSONObject -> Class : " + carClass);
 
+        Car carBean = (Car) JSONObject.toBean(carObject, Car.class);
+        System.out.println(carBean);
+
         JSONObject object = new JSONObject();
         object.put("carNumber", "0987");
         object.put("name", "{}");       //문자열 "{}"을 빈 객체로 변환
