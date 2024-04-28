@@ -11,6 +11,8 @@ public class Car {
     @JsonProperty("TYPE")
     private String type;
 
+    private int createdYear;
+
     public String getName() {
         return name;
     }
@@ -35,12 +37,21 @@ public class Car {
         this.type = type;
     }
 
+    public int getCreatedYear() {
+        return createdYear;
+    }
+
+    public void setCreatedYear(int createdYear) {
+        this.createdYear = createdYear;
+    }
+
     @Override
     public String toString() {
         return "Car{" +
                 "name='" + name + '\'' +
                 ", carNumber='" + carNumber + '\'' +
                 ", type='" + type + '\'' +
+                ", createdYear=" + createdYear +
                 '}';
     }
 }

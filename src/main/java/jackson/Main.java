@@ -1,7 +1,9 @@
 package jackson;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -15,7 +17,6 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) throws JsonProcessingException {
-        System.out.println("main");
 
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -41,6 +42,7 @@ public class Main {
         //Object Mapper는 default 생성자 필요
         var objectUser = objectMapper.readValue(json, User.class);
         System.out.println(objectUser);
+        System.out.println("User.cars : " + objectUser.getCars());
 
         JsonNode jsonNode = objectMapper.readTree(json);        //JSON -> Object
         String _name = jsonNode.get("name").asText();
@@ -60,5 +62,22 @@ public class Main {
         objectNode.put("name", "ghm");      //json 값 변경
         objectNode.put("age", 37);
         System.out.println(objectNode.toPrettyString());
+
+        //ObjectMapper 설정
+        ObjectMapper objectMapper2 = new ObjectMapper();
+        objectMapper2.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
+        Car car3 = new Car();
+        car3.setName("GV80");
+        car3.setCarNumber("");
+        System.out.println("car3 : " + car3);   //String carNumber = "", String type = null, int createdYear = 0
+
+        String car3Json = objectMapper2.writeValueAsString(car3);
+        System.out.println("car3Json : " + car3Json);
+
+        objectMapper2.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);   //객체에 없는 Json 필드는 역직렬화 무시
+        String json2 = "{\"name\":\"GV80\",\"unknown\":\"9999\"}";
+        Car car3Deserialization = objectMapper2.readValue(json2, Car.class);  //String carNumber = null, String type = null, int createdYear = 0
+        System.out.println("car3Deserialization : " + car3Deserialization);
     }
 }
