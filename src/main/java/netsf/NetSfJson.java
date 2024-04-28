@@ -1,12 +1,18 @@
 package netsf;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jackson.dto.Car;
 import jackson.dto.User;
-import net.sf.json.*;
+import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.List;
 
+@Slf4j
 public class NetSfJson {
     public static void main(String[] args) {
         User user = new User("Chris", 34);
@@ -55,5 +61,24 @@ public class NetSfJson {
         object.put("carNumber", "0987");
         object.put("name", "{}");       //문자열 "{}"을 빈 객체로 변환
         System.out.println("## JSON : " + object);
+
+        try {
+            Car jsonToCar = (Car) JSONObject.toBean(object, Car.class);
+            log.info(jsonToCar.toString());
+        } catch (Exception e) {
+            log.info(e.getMessage(), e);
+            throw e;
+        }
+        //Jackson Text Json -> Object
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);   //Json에 없는 필드는 역직렬화 무시
+
+        try {
+            Car jacksonCar = objectMapper.readValue(object.toString(), Car.class);
+            log.info(jacksonCar.toString());
+        } catch (JsonProcessingException e) {
+            log.info(e.getMessage(), e);
+            throw new RuntimeException(e);
+        }
     }
 }
